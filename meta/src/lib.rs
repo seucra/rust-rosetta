@@ -158,7 +158,7 @@ impl TaskIndex {
             possible_draft_titles.sort();
 
             // FIXME: We might have to loop here if we get too many draft tasks.
-            let mut request = Url::parse("http://rosettacode.org/mw/api.php").unwrap();
+            let mut request = Url::parse("https://rosettacode.org/w/api.php").unwrap();
             request
                 .query_pairs_mut()
                 .append_pair("action", "query")
@@ -227,7 +227,7 @@ impl<'a> TaskIterator<'a> {
     fn fetch_task_batch(&mut self) -> Result<()> {
         let end = cmp::min(self.requested_task_titles.len(), 50);
         let next_batch_titles = self.requested_task_titles.drain(..end).collect::<Vec<_>>();
-        let mut request = Url::parse("http://rosettacode.org/mw/api.php").unwrap();
+        let mut request = Url::parse("https://rosettacode.org/w/api.php").unwrap();
         request
             .query_pairs_mut()
             .append_pair("action", "query")
