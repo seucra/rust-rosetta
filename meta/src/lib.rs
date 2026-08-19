@@ -114,7 +114,7 @@ impl TaskIndex {
         let local_tasks = local::parse_tasks(workspace_root.as_ref().join("Cargo.toml")).unwrap();
         let local_task_titles = local_tasks.iter().map(|task| task.title.clone()).collect();
 
-        let client = Client::new();
+        let client = Client::builder().user_agent("rust-rosetta").build()?;
         let all_task_titles = TaskIndex::all_task_titles(&client, &local_task_titles)?;
 
         Ok(TaskIndex {

@@ -64,7 +64,7 @@ fn query_api(
     category_name: &str,
     continue_params: &BTreeMap<String, String>,
 ) -> Result<Value, TaskParseError> {
-    let mut url = Url::parse("http://rosettacode.org/mw/api.php").expect("invalid URL");
+    let mut url = Url::parse("https://rosettacode.org/w/api.php").expect("invalid URL");
     url.query_pairs_mut()
         .append_pair("action", "query")
         .append_pair("list", "categorymembers")
@@ -73,7 +73,10 @@ fn query_api(
         .append_pair("format", "json")
         .extend_pairs(continue_params);
 
-    Ok(reqwest::blocking::get(url)?.json()?)
+    let client = reqwest::blocking::Client::builder()
+        .user_agent("rust-rosetta")
+        .build()?;
+    Ok(client.get(url).send()?.json()?)
 }
 
 /// Given a JSON object, parses the task information from the MediaWiki API response.
